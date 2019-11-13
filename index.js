@@ -39,7 +39,7 @@ newPartyButton.addEventListener('click', event => {
 
                 partyContainer.innerHTML += renderParty(party)
                 showPartyElement.innerHTML = renderPartyDetails(party) // PROBLEM
-                debugger
+            //     debugger
             })
         }
     })
