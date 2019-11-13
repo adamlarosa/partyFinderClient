@@ -2,22 +2,26 @@
     box-sizing: border-box;
 }
 
-#outer-panel {
-    display: grid;
-    grid-template-columns: 20% 80%;
-}
 /* main page elements */
 body {
     font-family: monospace;
+    font-size: 25px;
 }
 
-body #list-panel {
-    background: lightgray;
+#outer-panel {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-auto-rows: minmax(100px, auto);
+    grid-column-gap: 10px;
+}
+
+#list-panel {
+    background-color: lightsteelblue;
     display: inline-block;
 }
 
-body #show-panel {
-    background: antiquewhite;
+#show-panel {
+    background-color: antiquewhite;
     display: inline-block;
     text-align: center;
     
@@ -31,6 +35,13 @@ button {
     color: white;
     padding: 0.3125rem 1.0625rem;
   }
+
+input {
+    padding: 0.5rem;
+    border-radius: 0.3125rem;
+    font-size: 0.6rem;
+    border: 1px solid #bbbbbb;
+}
 
 .btn {
     padding: 20px;
