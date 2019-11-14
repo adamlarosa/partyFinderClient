@@ -55,12 +55,13 @@ button {
     font-size: 0.8rem;
     font-family: optima;
     font-style: sans-serif;
-    background: rgb(52, 52, 196);
+    background: rgb(52, 52, 196);    
     border: none;
     border-radius: 0.3125rem;
     color: white;
     padding: 0.3125rem 1.0625rem;
   }
+
 
 input {
     padding: 0.5rem;

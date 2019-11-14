@@ -1,10 +1,126 @@
 const partiesURL = "http://localhost:3000/parties";
+const commentsURL = "http://localhost:3000/comments";
 
 const newPartyButton = document.getElementById('new-party')
 const allParties = document.getElementById('list-panel')
 const partyContainer = document.getElementById('list')
-const showPartyElement = document.getElementById('show-panel')   
+const showPartyElement = document.getElementById('show-panel') 
 
+
+//fetching all party names
+fetch(partiesURL)
+    .then(resp => resp.json())
+    .then(json => {
+        json.map(party => {
+            partyContainer.innerHTML += renderParty(party)
+        })
+    })
+
+function renderParty(party) {
+    return `
+    <li data-id="${party.id}">${party.title}</li>`
+}
+
+// Showing a party
+partyContainer.addEventListener('click', event => {
+    const partyId = event.target.dataset.id
+    fetchParty(partyId)
+})
+
+function fetchParty(partyId){
+    return fetch(`${partiesURL}/${partyId}`)
+        .then(resp => resp.json())
+        .then(party => {
+            showPartyElement.innerHTML =  renderPartyDetails(party) 
+        })
+}
+
+function renderPartyDetails(party) {
+    let date = new Date(`${party.date}`)
+
+    return `
+    <h1>${party.title}</h1>
+    <button data-id="${party.id}" id="party-like">❤️ Like : ${party.likes}</button>
+    <h3>Venue: ${party.venue}</h3>
+    <h6>Date: ${date.toUTCString()}</h6>
+    <p>Info: ${party.description}</p>
+    <h4>Comments:</h4>
+    <ul class="comment-info">${party.comments ? renderComments(party) : drawCommentBox(party)}
+    </ul>
+    `
+}
+
+function renderComments (party) {
+    return party.comments.map(comment => { 
+             return renderSingleComment(comment)
+     }).join('') + `<br><p>` + drawCommentBox(party)
+}
+
+function renderSingleComment(comment) {
+    return  `<p>👽: ${comment.body}</p>
+    <button data-id="${comment.id}"  class="comment-like" >❤️ Like : ${comment.likes}</button>
+    `
+}
+
+function drawCommentBox(party) {
+    return `<textarea name="comment"></textarea><button id = "comment-button" data-party-id="${party.id}">Add Comment</button>`
+}
+
+//Updating Comment and Party Like
+showPartyElement.addEventListener("click", event =>{
+
+    //Comment like
+    if (event.target.className === 'comment-like') {
+      
+        const buttonElement = event.target
+        const commentId = event.target.dataset.id
+        const splittedTextcontent = event.target.textContent.split(' ')
+    
+        fetch(`${commentsURL}/${commentId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-type": 'application/json',
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+                likes: parseInt(splittedTextcontent[3]) + 1
+            })
+        })
+        .then(resp => resp.json())
+        .then(comment => {
+           const splitted = buttonElement.textContent.split(' ')
+           splitted[3] = `${comment.likes}`
+           buttonElement.textContent = splitted.join(' ')
+        })
+    }
+
+    //Party Like
+    if (event.target.id === 'party-like') {
+
+        const partyId = event.target.dataset.id
+        const splittedTextcontent = event.target.textContent.split(' ')
+        
+        fetch(`${partiesURL}/${partyId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-type": 'application/json',
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+                likes: parseInt(splittedTextcontent[3]) + 1
+            })
+        })
+        .then(resp => resp.json())
+        .then(party => {
+           const buttonElement = document.querySelector('#party-like')
+           const splitted = buttonElement.textContent.split(' ')
+           splitted[3] = `${party.likes}`
+           buttonElement.textContent = splitted.join(' ')
+        })
+    }
+})
+
+//Creating a new Party - Form
 newPartyButton.addEventListener('click', event => {
 
     showPartyElement.innerHTML = `
@@ -12,7 +128,7 @@ newPartyButton.addEventListener('click', event => {
             <input type="text" name="title" placeholder="Party Name"><br>
             <input type="text" name="description" placeholder="Description">
             <input type="text" name="venue" placeholder="VENUE!">
-            <input type="datetime" name="date" placeholder="DATE!">
+            <input type="datetime-local" name="date" placeholder="DATE!" value="2019-11-12T19:30">
             <input type="submit">
         </form>
     `
@@ -36,63 +152,45 @@ newPartyButton.addEventListener('click', event => {
             })
             .then(resp => resp.json())
             .then(party => {
-
-                partyContainer.innerHTML += renderParty(party)
-                showPartyElement.innerHTML = renderPartyDetails(party) // PROBLEM
-            //     debugger
+                if (party.message){
+                    showPartyElement.innerHTML = `<p class="error">${party.message}</p>`
+                } else{
+                    partyContainer.innerHTML += renderParty(party)
+                    showPartyElement.innerHTML = renderPartyDetails(party)
+                }
+                
             })
         }
     })
 })
 
+//Adding a new comment
+showPartyElement.addEventListener('click', event =>{
+    if(event.target.textContent === 'Add Comment'){
+        
+        const partyId = event.target.dataset.partyId
+        const commentBody = event.target.previousSibling.value
 
-
-function renderParty(party) {
-return `
-<li data-id="${party.id}">${party.title}</li>`
-}
-
-//fetching all party names
-fetch(partiesURL)
-    .then(resp => resp.json())
-    .then(json => {
-        json.map(party => {
-            partyContainer.innerHTML += renderParty(party)
+        fetch(commentsURL, {
+            method: "POST",
+            headers: {
+                "Content-type": 'application/json',
+                "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+                party_id: parseInt(partyId),
+                body: commentBody,
+                likes: 0
+            })
         })
-    })
-
-function renderParty(party) {
-    return `
-    <li data-id="${party.id}">${party.title}</li>`
-}
-
-// draw parties when clicked on
-partyContainer.addEventListener('click', event => {
-    const partyId = event.target.dataset.id
-    fetch(`${partiesURL}/${partyId}`)
         .then(resp => resp.json())
-        .then(party => {
-            showPartyElement.innerHTML =  renderPartyDetails(party) 
-
+        .then(comment => {
+            const commentContainer = document.querySelector('.comment-info')
+            if (comment.message){
+                showPartyElement.innerHTML += `<p class="error">${comment.message}</p>`
+            } else{
+                fetchParty(partyId)
+            }
         })
+    }
 })
-
-function renderPartyDetails(party) {
-    return `
-    <h1>${party.title}</h1>
-    <h7>Likes: ${party.likes}</h7>
-    <h3>Venue: ${party.venue}</h3>
-    <h6>Date: ${party.date}</h6>
-    <p>Info: ${party.description}</p>
-    <h4>Comments:</h4>
-    <ul>${party.comments ? renderSingleComment(party) : "No Comment." }
-    </ul>
-    `
-}
-
-function renderSingleComment (party) {
-    party.comments.map(comment => {
-        return  `<p>${comment.body}  |  Likes:${comment.likes}</p>`
-     })
-}
-
