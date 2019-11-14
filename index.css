@@ -1,4 +1,42 @@
-body {
+* {
+    box-sizing: border-box;
+}
+
+#outer-panel {
     display: grid;
-    grid-template-columns: 2fr 8fr
+    grid-template-columns: 20% 80%;
+}
+/* main page elements */
+body {
+    font-family: monospace;
+}
+
+body #list-panel {
+    background: lightgray;
+    display: inline-block;
+}
+
+body #show-panel {
+    background: antiquewhite;
+    display: inline-block;
+    
+}
+/* feature details */
+button {
+    font-size: 1rem;
+    background: navy;
+    border: none;
+    border-radius: 0.3125rem;
+    color: white;
+    padding: 0.3125rem 1.0625rem;
+  }
+
+.btn {
+    padding: 20px;
+    color: white;
+}
+
+#new-party {
+    height: 40px;
+    width: 100px;
 }
