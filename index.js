@@ -28,7 +28,7 @@ partyContainer.addEventListener('click', event => {
 })
 
 function fetchParty(partyId){
-    fetch(`${partiesURL}/${partyId}`)
+    return fetch(`${partiesURL}/${partyId}`)
         .then(resp => resp.json())
         .then(party => {
             showPartyElement.innerHTML =  renderPartyDetails(party) 
@@ -56,7 +56,7 @@ function renderComments (party) {
 
 function renderSingleComment(comment) {
     return  `<p>👽: ${comment.body}</p>
-    <button data-id="${comment.id}", id="comment-like" >❤️ Like : ${comment.likes}</button>
+    <button data-id="${comment.id}"  class="comment-like" >❤️ Like : ${comment.likes}</button>
     `
 }
 
@@ -68,11 +68,12 @@ function drawCommentBox(party) {
 showPartyElement.addEventListener("click", event =>{
 
     //Comment like
-    if (event.target.id === 'comment-like') {
+    if (event.target.className === 'comment-like') {
       
+        const buttonElement = event.target
         const commentId = event.target.dataset.id
-      const splittedTextcontent = event.target.textContent.split(' ')
-
+        const splittedTextcontent = event.target.textContent.split(' ')
+    
         fetch(`${commentsURL}/${commentId}`, {
             method: "PATCH",
             headers: {
@@ -85,7 +86,6 @@ showPartyElement.addEventListener("click", event =>{
         })
         .then(resp => resp.json())
         .then(comment => {
-           const buttonElement = document.querySelector('#comment-like')
            const splitted = buttonElement.textContent.split(' ')
            splitted[3] = `${comment.likes}`
            buttonElement.textContent = splitted.join(' ')
@@ -165,7 +165,7 @@ newPartyButton.addEventListener('click', event => {
 //Adding a new comment
 showPartyElement.addEventListener('click', event =>{
     if(event.target.textContent === 'Add Comment'){
-        event.preventDefault()
+        
         const partyId = event.target.dataset.partyId
         const commentBody = event.target.previousSibling.value
 
@@ -185,19 +185,10 @@ showPartyElement.addEventListener('click', event =>{
         .then(comment => {
             const commentContainer = document.querySelector('.comment-info')
             if (comment.message){
-                fetchParty(partyId)
                 showPartyElement.innerHTML += `<p class="error">${comment.message}</p>`
-                // showPartyElement.innerText=`${comment.message}`
-                // debugger
-                // + drawCommentBox(comment.party)
             } else{
-                
                 fetchParty(partyId)
             }
         })
-
-
     }
-
-
 })
