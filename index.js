@@ -36,11 +36,13 @@ function fetchParty(partyId){
 }
 
 function renderPartyDetails(party) {
+    let date = new Date(`${party.date}`)
+
     return `
     <h1>${party.title}</h1>
     <button data-id="${party.id}" id="party-like">❤️ Like : ${party.likes}</button>
     <h3>Venue: ${party.venue}</h3>
-    <h6>Date: ${party.date}</h6>
+    <h6>Date: ${date.toUTCString()}</h6>
     <p>Info: ${party.description}</p>
     <h4>Comments:</h4>
     <ul class="comment-info">${party.comments ? renderComments(party) : drawCommentBox(party)}
