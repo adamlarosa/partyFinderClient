@@ -5,6 +5,7 @@ const newPartyButton = document.getElementById('new-party')
 const allParties = document.getElementById('list-panel')
 const partyContainer = document.getElementById('list')
 const showPartyElement = document.getElementById('show-panel') 
+ const newPartyModal = document.querySelector('.modal')
 
 
 //fetching all party names
@@ -18,7 +19,8 @@ fetch(partiesURL)
 
 function renderParty(party) {
     return `
-    <li data-id="${party.id}">${party.title}</li>`
+    <h2 class="party-title" data-id="${party.id}">${party.title}</h2>
+    <hr class="line">`
 }
 
 // Showing a party
@@ -40,7 +42,7 @@ function renderPartyDetails(party) {
 
     return `
     <h1>${party.title}</h1>
-    <button data-id="${party.id}" id="party-like">❤️ Like : ${party.likes}</button>
+    <button data-id="${party.id}" id="party-like">💙 Like : ${party.likes}</button>
     <h3>Venue: ${party.venue}</h3>
     <h6>Date: ${date.toUTCString()}</h6>
     <p>Info: ${party.description}</p>
@@ -63,7 +65,7 @@ function renderSingleComment(comment) {
 }
 
 function drawCommentBox(party) {
-    return `<textarea name="comment"></textarea><button id = "comment-button" data-party-id="${party.id}">Add Comment</button>`
+    return `<textarea id="comment-textbox" name="comment"></textarea><button id = "comment-button" data-party-id="${party.id}">Add Comment</button>`
 }
 
 //Updating Comment and Party Like
@@ -125,11 +127,11 @@ newPartyButton.addEventListener('click', event => {
 
     showPartyElement.innerHTML = `
         <form id="form">
-            <input type="text" name="title" placeholder="Party Name"><br>
+            <input id="party-name-input" type="text" name="title" placeholder="Party Name"><br>
             <input type="text" name="description" placeholder="Description">
             <input type="text" name="venue" placeholder="VENUE!">
-            <input type="datetime-local" name="date" placeholder="DATE!" value="2019-11-12T19:30">
-            <input type="submit">
+            <input id="datetime" type="datetime-local" name="date" placeholder="DATE!" value="2019-11-12T19:30">
+            <input type="submit" id="submit-button">
         </form>
     `
     document.getElementById('form').addEventListener('click', event => { 

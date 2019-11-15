@@ -2,41 +2,211 @@
     box-sizing: border-box;
 }
 
+/* header {
+    background-color: rgb(25, 43, 83);
+    text-align: center;
+    padding: 20px;
+  }  
+
+ footer {
+    background-color: rgb(28, 32, 39); 
+    text-align: center;
+    padding: 10px;
+    margin: 20px;
+}  */
+
+html {
+  height: 100vh;
+  width: 100vw;
+}
+
+
+/* main page elements */
+/* body {
+    font-family: optima;
+    font-style: sans-serif;
+    font-size: 20px;
+    color: white;
+    margin: 0px;
+} */
+/* contains both the list panel and show panel */
 #outer-panel {
     display: grid;
     grid-template-columns: 20% 80%;
-}
-/* main page elements */
-body {
-    font-family: monospace;
-}
-
-body #list-panel {
-    background: lightgray;
-    display: inline-block;
+    grid-auto-columns: auto;
+    grid-column-gap: 10px;
+    padding-bottom: 8vh;
 }
 
-body #show-panel {
-    background: antiquewhite;
+#list-panel {
+    background-color: rgb(19, 18, 18);
     display: inline-block;
-    
+    padding-bottom: 30vh;
+    border-color: black;
+    color: white;
 }
+
+#show-panel {
+    /* background-image: url("https://ak5.picdn.net/shutterstock/videos/6310805/thumb/1.jpg"); */
+    background-size: 100%;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    right: 10px;
+    color: white;
+    padding-bottom: 30vh;
+}
+
+
 /* feature details */
 button {
-    font-size: 1rem;
-    background: navy;
+    font-size: 0.8rem;
+    font-family: optima;
+    font-style: sans-serif;
+    background: rgb(52, 52, 196);    
     border: none;
     border-radius: 0.3125rem;
     color: white;
     padding: 0.3125rem 1.0625rem;
+    transition: all 0.2s;  
   }
 
-.btn {
-    padding: 20px;
-    color: white;
+
+input {
+    padding: 0.5rem;
+    border-radius: 0.3125rem;
+    font-size: 0.6rem;
+    border: 1px solid #bbbbbb;
 }
 
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* new party button */
 #new-party {
-    height: 40px;
-    width: 100px;
+    position: relative;
+    left: 25px;
+    top: 10px;
+    background-color: rgb(253, 253, 253);
+    color: black;
+    
+} 
+
+fieldset {
+    font-size: 17px;
+    background-color: black;
+    color: white;
+    position: relative;
+    left: -2px;
+}
+
+  html {
+    font-size: 18px;
+  }
+  body{
+
+  font-family: "Questrial", sans-serif;
+  background-color: #f00a0ad8;
+  background-image: linear-gradient(
+      45deg,
+      black 25%,
+      transparent 25%,
+      transparent 75%,
+      black 75%,
+      black 
+      
+    ),
+    linear-gradient(
+      -45deg,
+    black 25%,
+      transparent 25%,
+      transparent 75%,
+    black 75%,
+    black
+    );
+  background-size: 60px 60px;
+  background-position: 0 0;
+  animation: slide 4s infinite linear;
+}
+
+@keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -120px 60px;
+  }
+}
+
+button:hover {
+  box-shadow: 0.4rem 0.4rem 0 black;
+  transform: translate(-0.4rem, -0.4rem);
+}
+
+button:active {
+  box-shadow: 0 0 0 black;
+  transform: translate(0, 0);
+}
+
+.options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#submit-button:hover {
+ box-shadow: 0.4rem 0.4rem 0 black;
+  transform: translate(-0.4rem, -0.4rem);
+}
+
+#submit-button:active {
+    box-shadow: 0 0 0 black;
+    transform: translate(0, 0);
+  }
+
+#party-like {
+    background-color: white;
+    padding: 0.3rem 0.3rem;
+    color:black
+}
+
+.party-title {
+    font-size: 20px; 
+    position: relative;
+    right: 25px
+}
+
+#comment-button {
+    position: relative;
+    right: 33px;
+    bottom: 11px;        
+}
+
+.line {
+    position: relative;
+    right: 25px
+}
+
+#comment-textbox {
+    position: relative;
+    right: 51px;
+}
+
+.comment-like {
+    position: relative;
+    right: 20px;
+}
+
+#party-name-input {
+    position: relative;
+    right: 350px;
+    top: 33px
+}
+
+#datetime {
+    height: 33px;
 }
